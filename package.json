@@ -1,0 +1,15 @@
+{
+  "name": "websocket-echo",
+  "version": "1.0.0",
+  "description": "Websocket echo server with socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Milos Lazarevic",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^2.5.16",
+    "ws": "^5.2.2"
+  }
+}

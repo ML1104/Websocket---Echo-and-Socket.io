@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Websocket Echo</title>
+    <script src="client.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <button v-on:click="connect" class="buttons">Connect</button>
+            <button v-on:click="disconnect" class="buttons">Disconnect</button>
+        </div>
+        <p id="messages">{{ response }}</p>
+        <button v-on:click="sendMessage" class="buttons">Send Message</button>
+    </div>
+    
+    
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue ({
+            el: '#app',
+            
+            data: {
+                message: 'Hello World',
+                socket: '',
+                response: [],
+            },
+            
+            methods: {
+                connect: function(message) {
+                    this.socket = new WebSocket('ws://localhost:8080');
+                    
+                    this.socket.addEventListener('open', () => {
+                        this.response.push('Connected Successfully');
+                    });
+                    
+                    this.socket.addEventListener('message', (message) => {
+                        this.response.push('Message received: ' + event.data);
+                    })
+                    
+                    this.socket.addEventListener('close', () => {
+                        this.response.push('Disconnected Successfully');
+                    })
+                },
+                
+                disconnect() {
+                    this.socket.close();
+                },
+                
+                sendMessage: function() {
+                    console.log('MESSAGE SENT');
+                    this.socket.send("Hello earthlings!");
+                }
+            },
+            
+            
+        })
+    </script>
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #app {
+            width: 25%;
+            height: 300px;  
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+            border: 2px solid green;
+            background-color: lightgray;
+        }
+
+        .buttons {
+            background-color: green;
+            border: none;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            padding: 15px 32px;
+        }
+
+        #messages {
+            width: 300px;
+            text-align: center;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Websocket Echo</title>
+    <script src="client.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ message }}
+        <br>
+        <br>
+        <button v-on:click="connect">Connect</button>
+        <button v-on:click="disconnect">Disconnect</button>
+        <button v-on:click="sendMessage">Send Message</button>
+        <p>{{ response }}</p>
+    </div>
+    
+    
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue ({
+            el: '#app',
+            
+            data: {
+                message: 'Hello World',
+                socket: '',
+                response: [],
+            },
+            
+            methods: {
+                connect: function(message) {
+                    this.socket = new WebSocket('ws://localhost:8080');
+                    
+                    this.socket.addEventListener('open', function() {
+                        this.response.push('Connected Successfully');
+                    });
+                    
+                    this.socket.addEventListener('message', function(message) {
+                        this.response.push('Message received: ' + message);
+                    })
+                    
+                    this.socket.addEventListener('close', function() {
+                        this.response.push('Disconnected Successfully');
+                    })
+                },
+                
+                disconnect() {
+                    this.socket.close();
+                },
+                
+                sendMessage: function() {
+                    console.log('MESSAGE SENT');
+                    this.socket.send("Hello earthlings!");
+                }
+            },
+            
+            
+        })
+    </script>
+</body>
+</html>
