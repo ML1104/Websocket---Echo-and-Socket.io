@@ -9,6 +9,8 @@
   "author": "Milos Lazarevic",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1",
     "vue": "^2.5.16",
     "ws": "^5.2.2"
   }
